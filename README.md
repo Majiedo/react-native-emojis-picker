@@ -20,7 +20,11 @@ wrap the whole app in `EmojiProvider`
 ```ts
 import { EmojiProvider } from "react-native-emojis-picker";
 export default function App() {
-  return <EmojiProvider>//rest your app</EmojiProvider>;
+  return (
+    <EmojiProvider>
+      //rest your app 
+    </EmojiProvider>
+  );
 }
 ```
 
@@ -31,7 +35,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { EmojiModal } from "react-native-emojis-picker";
 
-export default function App() {
+export default function EmojiComponent() {
   const [showModal, setShowModal] = useState(false);
   const [emoji, setEmoji] = useState("");
   return (
@@ -64,6 +68,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+```
+
+now import the component we just created into `App.tsx`
+
+```ts
+import { EmojiProvider } from "react-native-emojis-picker";
+import EmojiComponent from "./components/emoji";
+export default function App() {
+  return (
+    <EmojiProvider>
+      <EmojiComponent />
+    </EmojiProvider>
+  );
+}
 ```
 
 ### `EmojiModal` Props
