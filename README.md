@@ -7,13 +7,14 @@ It's built with TypeScript and uses Reanimated 2 for smooth animations
 
 ![plot](./assets/img.png)
 
-##Installation
+### Installation
 
 ```bash
 npm install react-native-emojis-picker
 ```
 
-##Usage
+### Usage
+
 wrap the whole app in `EmojiProvider`
 
 ```ts
