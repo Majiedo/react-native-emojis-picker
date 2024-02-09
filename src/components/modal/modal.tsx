@@ -8,6 +8,8 @@ import {
   StyleSheet,
   View,
   Text,
+  ViewStyle,
+  SafeAreaView,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import FilterBar from "./filterBar";
@@ -21,6 +23,7 @@ import Animated, {
   FadeOut,
   FadeOutDown,
 } from "react-native-reanimated";
+import { Key } from "../../types";
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -29,6 +32,11 @@ interface IModalProps {
   columns?: number;
   onEmojiSelected: (emoji: string) => void;
   onPressOutside?: () => void;
+  categories?: Key[];
+  modalStyle?: ViewStyle;
+  position?: "top" | "bottom" | "center";
+  darkMode?: boolean;
+  autoFocusSearch?: boolean;
 }
 
 export default function Modal({
@@ -36,81 +44,123 @@ export default function Modal({
   columns = 10,
   onEmojiSelected,
   onPressOutside,
+  categories = [
+    "Smileys & Emotion",
+    "Activities",
+    "Animals & Nature",
+    "Flags",
+    "Food & Drink",
+    "Objects",
+    "People & Body",
+    "Symbols",
+    "Travel & Places",
+  ],
+  position = "center",
+  darkMode = false,
+  autoFocusSearch = false,
 }: IModalProps) {
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Smileys & Emotion");
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const key = useMemo(() => `modal-${nanoid()}`, []);
 
   const colSize = Math.floor((screenWidth - 80) / columns);
 
+  const positionStyle = useMemo(() => {
+    switch (position) {
+      case "top":
+        return "flex-start";
+      case "bottom":
+        return "flex-end";
+      default:
+        return "center";
+    }
+  }, [position]);
+
   return (
     <Portal name={key} key={key}>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
-        style={styles.container}
-        behavior="padding"
-      >
-        <AnimatedBlurView
-          entering={FadeIn}
-          exiting={FadeOut}
-          onTouchStart={onPressOutside}
-          style={styles.blur}
-          intensity={intensityBlur}
-        />
-        <Animated.View
-          entering={FadeInDown.springify()}
-          exiting={FadeOutDown}
-          style={styles.modal}
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+          style={[styles.container, { justifyContent: positionStyle }]}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <FilterBar
-            onPress={(key) => setSelectedCategory(key)}
-            selectedCategory={selectedCategory}
+          <AnimatedBlurView
+            entering={FadeIn}
+            exiting={FadeOut}
+            onTouchStart={onPressOutside}
+            style={styles.blur}
+            intensity={intensityBlur}
           />
-          <Search
-            placeholder="Search.."
-            value={search}
-            onChangeText={(value) => setSearch(value)}
-          />
-          {!search && <Text style={styles.title}>{selectedCategory}</Text>}
-          <FlatList
-            numColumns={columns}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View style={styles.noResultWrapper}>
-                <Text style={styles.noResultText}>No Results</Text>
-              </View>
-            }
-            contentContainerStyle={styles.flatlistContainer}
-            data={emojis.filter((item) => {
-              if (search === "") {
-                return item.category === selectedCategory;
-              } else {
-                return item.name.includes(search.toLocaleUpperCase());
-              }
-            })}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-              <EmojiCell
-                colSize={colSize}
-                emoji={item}
-                onPress={(emoji) => onEmojiSelected(charFromEmojiObject(emoji))}
-              />
+          <Animated.View
+            entering={FadeInDown.springify()}
+            exiting={FadeOutDown}
+            style={[styles.modal, darkMode && { backgroundColor: "#352F44" }]}
+          >
+            <FilterBar
+              darkMode={darkMode}
+              categories={categories}
+              onPress={(key) => setSelectedCategory(key)}
+              selectedCategory={selectedCategory}
+            />
+            <Search
+              darkMode={darkMode}
+              autoFocus={autoFocusSearch}
+              placeholder="Search.."
+              value={search}
+              onChangeText={(value) => setSearch(value)}
+            />
+            {!search && (
+              <Text
+                style={[styles.title, { color: darkMode ? "white" : "black" }]}
+              >
+                {selectedCategory}
+              </Text>
             )}
-          />
-        </Animated.View>
-      </KeyboardAvoidingView>
+            <FlatList
+              numColumns={columns}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={
+                <View style={styles.noResultWrapper}>
+                  <Text style={styles.noResultText}>No Results</Text>
+                </View>
+              }
+              contentContainerStyle={styles.flatlistContainer}
+              data={emojis.filter((item) => {
+                if (search === "") {
+                  return item.category === selectedCategory;
+                } else {
+                  return item.name.includes(search.toLocaleUpperCase());
+                }
+              })}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item }) => (
+                <EmojiCell
+                  colSize={colSize}
+                  emoji={item}
+                  onPress={(emoji) =>
+                    onEmojiSelected(charFromEmojiObject(emoji))
+                  }
+                />
+              )}
+            />
+          </Animated.View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     </Portal>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    zIndex: 1000,
-    justifyContent: "center",
-    alignItems: "center",
+  safeArea: {
     height: screenHeight,
     width: screenWidth,
     position: "absolute",
+  },
+  container: {
+    zIndex: 1000,
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
   },
   blur: {
     position: "absolute",

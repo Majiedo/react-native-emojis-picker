@@ -1,10 +1,18 @@
 import { StyleSheet, TextInput } from "react-native";
 import React from "react";
 
-interface ISearchProps extends React.ComponentProps<typeof TextInput> {}
+interface ISearchProps extends React.ComponentProps<typeof TextInput> {
+  darkMode?: boolean;
+}
 
-export default function Search({ ...props }: ISearchProps) {
-  return <TextInput {...props} style={styles.search} />;
+export default function Search({ darkMode, ...props }: ISearchProps) {
+  return (
+    <TextInput
+      style={[styles.search, darkMode && { backgroundColor: "#5C5470" }]}
+      placeholderTextColor={"#8E8E93"}
+      {...props}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
