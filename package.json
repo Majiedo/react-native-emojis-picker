@@ -1,6 +1,6 @@
 {
   "name": "react-native-emojis-picker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple emoji picker for React Native and Expo. It's built with TypeScript and uses Reanimated 2 for smooth animations.",
   "keywords": [
     "expo",
@@ -18,7 +18,8 @@
     "url": "https://github.com/Majiedo/react-native-emojis-picker"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "dev": "rm -rf dist && rm -rf react-native-emojis-picker-*.tgz && tsup && npm pack && cd example && npm uninstall react-native-emojis-picker && npm install ../react-native-emojis-picker-*.tgz && npm run ios"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

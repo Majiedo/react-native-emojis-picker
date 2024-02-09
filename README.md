@@ -5,12 +5,36 @@ react-native-emojis-picker
 It's built with TypeScript and uses Reanimated 2 for smooth animations
 </p>
 
-![plot](./assets/img.png)
+|          light theme          |          dark theme          |
+| :---------------------------: | :--------------------------: |
+| ![](./assets/light-theme.png) | ![](./assets/dark-theme.png) |
 
 ### Installation
 
 ```bash
 npm install react-native-emojis-picker
+```
+
+### Dependencies
+
+This library needs react-native-reanimated to be installed in your project before you can use it:
+
+```bash
+npm install react-native-reanimated@3.6.2
+```
+
+Add `react-native-reanimated/plugin` plugin to your `babel.config.js`.
+
+```ts
+  module.exports = {
+    presets: [
+      ... // don't add it here :)
+    ],
+    plugins: [
+      ...
+      'react-native-reanimated/plugin',
+    ],
+  };
 ```
 
 ### Usage
@@ -20,11 +44,7 @@ wrap the whole app in `EmojiProvider`
 ```ts
 import { EmojiProvider } from "react-native-emojis-picker";
 export default function App() {
-  return (
-    <EmojiProvider>
-      //rest your app 
-    </EmojiProvider>
-  );
+  return <EmojiProvider>//rest your app</EmojiProvider>;
 }
 ```
 
@@ -86,12 +106,15 @@ export default function App() {
 
 ### `EmojiModal` Props
 
-|    Property     |   Type   |  Default  |                     description                     |
-| :-------------: | :------: | :-------: | :-------------------------------------------------: |
-|  intensityBlur  |  number  |    20     |         the intensity of the backgroud blur         |
-|     columns     |  number  |    10     |                  number of columns                  |
-| onEmojiSelected | function | undefined |   function fire when emoji selected return emoji    |
-| onPressOutside  | function | undefined | function fire when the user press outside the modal |
+|    Property     |             Type              |  Default  |                           description                           |
+| :-------------: | :---------------------------: | :-------: | :-------------------------------------------------------------: |
+|  intensityBlur  |            number             |    20     |               the intensity of the backgroud blur               |
+|     columns     |            number             |    10     |                        number of columns                        |
+| onEmojiSelected |           function            | undefined | function fire when emoji selected and return the selected emoji |
+| onPressOutside  |           function            | undefined |       function fire when the user press outside the modal       |
+|    position     | "top" or "bottom" or "center" | "center"  |                      position of the modal                      |
+| autoFocusSearch |            boolean            |   false   |                  auto focus the search textbox                  |
+|    darkMode     |            boolean            |   false   |                       theme of the modal                        |
 
 ### Author
 

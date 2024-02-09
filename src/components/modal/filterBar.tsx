@@ -1,23 +1,43 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Categories } from "../../helper";
-import { screenHeight } from "../../constants";
+import { screenHeight, screenWidth } from "../../constants";
+import { Key } from "../../types";
 
 interface IFilterBarProps {
-  onPress: (key: string) => void;
+  categories: Key[];
+  onPress: (key: Key) => void;
   selectedCategory: string;
+  darkMode?: boolean;
 }
 
 export default function FilterBar({
   onPress,
   selectedCategory,
+  categories,
+  darkMode,
 }: IFilterBarProps) {
+  const result = Categories.filter((item) =>
+    categories.find((el) => el === item.key)
+  );
+
+  const size = Math.floor((screenWidth - 80) / 9);
+
   return (
-    <View style={styles.wrapper}>
-      {Categories.map((category, index) => (
+    <View
+      style={[
+        styles.wrapper,
+        { borderColor: darkMode ? "#5C5470" : "#f2f2f2" },
+      ]}
+    >
+      {result.map((category, index) => (
         <TouchableOpacity
           onPress={() => onPress(category.key)}
           key={index}
-          style={{ opacity: selectedCategory === category.key ? 1 : 0.3 }}
+          style={{
+            opacity: selectedCategory === category.key ? 1 : 0.3,
+            width: size,
+            height: size,
+          }}
         >
           <Text style={styles.icon}>{category.symbol}</Text>
         </TouchableOpacity>
@@ -29,12 +49,10 @@ export default function FilterBar({
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
     paddingBottom: 10,
     borderBottomWidth: 2,
-    borderColor: "#f2f2f2",
   },
   icon: {
     fontSize: screenHeight * 0.025,
