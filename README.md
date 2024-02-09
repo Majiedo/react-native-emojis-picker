@@ -106,15 +106,16 @@ export default function App() {
 
 ### `EmojiModal` Props
 
-|    Property     |             Type              |  Default  |                           description                           |
-| :-------------: | :---------------------------: | :-------: | :-------------------------------------------------------------: |
-|  intensityBlur  |            number             |    20     |               the intensity of the backgroud blur               |
-|     columns     |            number             |    10     |                        number of columns                        |
-| onEmojiSelected |           function            | undefined | function fire when emoji selected and return the selected emoji |
-| onPressOutside  |           function            | undefined |       function fire when the user press outside the modal       |
-|    position     | "top" or "bottom" or "center" | "center"  |                      position of the modal                      |
-| autoFocusSearch |            boolean            |   false   |                  auto focus the search textbox                  |
-|    darkMode     |            boolean            |   false   |                       theme of the modal                        |
+|    Property     |             Type              |    Default     |                                                                                       description                                                                                        |
+| :-------------: | :---------------------------: | :------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|  intensityBlur  |            number             |       20       |                                                                           the intensity of the backgroud blur                                                                            |
+|     columns     |            number             |       10       |                                                                                    number of columns                                                                                     |
+| onEmojiSelected |           function            |   undefined    |                                                             function fire when emoji selected and return the selected emoji                                                              |
+| onPressOutside  |           function            |   undefined    |                                                                   function fire when the user press outside the modal                                                                    |
+|    position     | "top" or "bottom" or "center" |    "center"    |                                                                                  position of the modal                                                                                   |
+| autoFocusSearch |            boolean            |     false      |                                                                              auto focus the search textbox                                                                               |
+|    darkMode     |            boolean            |     false      |                                                                                    theme of the modal                                                                                    |
+|   categories    |             Key[]             | All categories | only categories these are shown in the modal such as ( "Smileys & Emotion" "Activities" "Animals & Nature" "Flags" "Food & Drink" "Objects" "People & Body" "Symbols" "Travel & Places") |
 
 ### Author
 
