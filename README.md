@@ -44,7 +44,11 @@ wrap the whole app in `EmojiProvider`
 ```ts
 import { EmojiProvider } from "react-native-emojis-picker";
 export default function App() {
-  return <EmojiProvider>//rest your app</EmojiProvider>;
+  return (
+    <EmojiProvider>
+      //rest your app
+    </EmojiProvider>
+  );
 }
 ```
 
@@ -119,7 +123,7 @@ export default function App() {
 
 ### Author
 
-Majed Al-Otaibi, Majed@skiff.com
+Majed Al-Otaibi, majedbinobied@gmail.com
 
 ### License
 
